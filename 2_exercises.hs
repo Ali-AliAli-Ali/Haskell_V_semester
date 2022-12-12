@@ -35,12 +35,12 @@ sumDegsOf2 n | n < 0      = 0
 
 nPerfect :: Integer -> [Integer]    --return array of first n perfect nums
 nPerfect' :: Integer -> [Integer] -> Integer -> [Integer]
-nPerfect' n perfs t | toInteger(length(perfs)) == n  = perfs
-                    | toInteger(length(perfs)) < n   = (nPerfect' n 
+nPerfect' n perfs t | toInteger(length perfs) == n  = perfs
+                    | toInteger(length perfs) < n   = nPerfect' n 
                                                       (perfs ++ (if isprime(sumDegsOf2(t-1)) == 0 
                                                          then [] 
                                                          else [(sumDegsOf2(t-1)) * (degOf2(t-1))])) 
-                                                      (t+1))
+                                                      (t+1)
 nPerfect 0 = []
 nPerfect n = nPerfect' n [] 1
 
@@ -54,13 +54,13 @@ sumDivrs' n i sum | i*i > n       = sum
 sumDivrs n = sumDivrs' n 2 1
 
 findTwin :: Integer -> Integer
-findTwin n | sumDivrs(sumDivrs(n)) == n && sumDivrs(n) /= n  = sumDivrs(n)
+findTwin n | sumDivrs(sumDivrs n) == n && sumDivrs n /= n  = sumDivrs n
            | otherwise                                       = 0
 
 nTwins :: Integer -> [[Integer]]
 nTwins' :: Integer -> [[Integer]] -> [Integer] -> Integer -> [[Integer]]
-nTwins' n twins found t | toInteger(length(twins)) == n  = twins
-                        | (findTwin t) /= 0 && not (elem t found) && not (elem (findTwin t) found)
+nTwins' n twins found t | toInteger(length twins) == n  = twins
+                        | findTwin t /= 0 && notElem t found && notElem (findTwin t) found
                                                          = nTwins' n (twins ++ [[t, findTwin t]]) 
                                                            (found ++ [t] ++ [findTwin t]) (t+1)
                         | otherwise                      = nTwins' n twins found (t+1)
@@ -72,8 +72,8 @@ nTwins n = nTwins' n [] [] 2
 longestStr :: [String] -> String
 longestStr' :: [String] -> Int -> String -> String
 longestStr' [] maxlen maxstr = maxstr
-longestStr' (str:ls) maxlen maxstr | maxlen > (length str)   = longestStr' ls maxlen maxstr
-                                   | otherwise               = longestStr' ls (length str) str
+longestStr' (str:ls) maxlen maxstr | maxlen > length str   = longestStr' ls maxlen maxstr
+                                   | otherwise             = longestStr' ls (length str) str
 longestStr [] = ""
 longestStr ls = longestStr' ls 0 ""
 
@@ -82,8 +82,8 @@ longestStr ls = longestStr' ls 0 ""
 noEvenElts :: [a] -> [a]
 noEvenElts' :: [a] -> Integer -> [a]
 noEvenElts' [] i = []
-noEvenElts' (elt:ls) i | mod i 2 /= 0  = [elt] ++ noEvenElts' ls (i+1)
-                       | otherwise     = noEvenElts' ls (i+1)
+noEvenElts' (elt:ls) i | odd i      = elt : noEvenElts' ls (i+1)
+                       | otherwise  = noEvenElts' ls (i+1)
 noEvenElts ls = noEvenElts' ls 1
 
 noEvenEltsRec :: [[a]] -> [[a]]
@@ -105,8 +105,8 @@ noNumsStrs (str:ls) = (if (hasNum str) then [] else [str]) ++ noNumsStrs(ls)
 growSeqs :: [Integer] -> [[Integer]]
 growSeqs' :: [Integer] -> [Integer] -> [[Integer]]
 growSeqs' [] seq = [seq]
-growSeqs' (x:ls) seq | seq == [] || last seq < x  = growSeqs' ls (seq ++ [x])
-                     | otherwise                  = [seq] ++ (growSeqs' ls [x])
+growSeqs' (x:ls) seq | null seq || last seq < x  = growSeqs' ls (seq ++ [x])
+                     | otherwise                  = seq : growSeqs' ls [x]
 growSeqs ls = growSeqs' ls []
 
 
@@ -121,13 +121,13 @@ countUn x n = x^n / (fromIntegral(factl n)+1)
 scarySum :: Double ->  [Double]
 scarySum' :: Double -> Integer -> [Double] -> [Double]
 scarySum' x n [sum, step] 
-                  | abs(countUn x n) < abs(x)  = [sum, fromIntegral(n)]
-                  | otherwise                  = scarySum' x (n+1) [(sum + countUn x n), fromIntegral(n+1)]
+                  | abs(countUn x n) < abs(x)  = [sum, fromIntegral n]
+                  | otherwise                  = scarySum' x (n+1) [sum + countUn x n, fromIntegral(n+1)]
 scarySum x = scarySum' x 2 [x,2]
 
 
 main = do
-{-    
+    
     --1 to correct
     print(seq2 1, seq2 2, seq2 3, seq2 4, seq2 5, seq2 10, seq2 50)
     print(seq1 1, seq1 2, seq1 3, seq1 4, seq1 5, seq1 10)
@@ -146,5 +146,5 @@ main = do
     print(growSeqs [1,2,3,4,7,5,4,3,6,8,5])
     --8
     print(scarySum 2, scarySum 4, scarySum 10)
--}
+
     
