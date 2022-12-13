@@ -116,9 +116,9 @@ factl 0 = 1
 factl n = n * factl(n-1)
 
 countUn :: Double -> Integer -> Double
-countUn x n = x^n / (fromIntegral(factl n)+1)
+countUn x n = x^n / (fromIntegral(factl n) + 1)
 
-scarySum :: Double ->  [Double]
+scarySum :: Double -> [Double]
 scarySum' :: Double -> Integer -> [Double] -> [Double]
 scarySum' x n [sum, step] 
                   | abs(countUn x n) < abs(x)  = [sum, fromIntegral n]
@@ -127,7 +127,7 @@ scarySum x = scarySum' x 2 [x,2]
 
 
 main = do
-    
+{-    
     --1 to correct
     print(seq2 1, seq2 2, seq2 3, seq2 4, seq2 5, seq2 10, seq2 50)
     print(seq1 1, seq1 2, seq1 3, seq1 4, seq1 5, seq1 10)
@@ -146,5 +146,5 @@ main = do
     print(growSeqs [1,2,3,4,7,5,4,3,6,8,5])
     --8
     print(scarySum 2, scarySum 4, scarySum 10)
-
+-}  
     
